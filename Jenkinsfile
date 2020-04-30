@@ -4,7 +4,6 @@ pipeline {
     stage('build') {
       steps {
         sh 'ls -latr'
-        warnError(message: 'build unstabble')
       }
     }
 
