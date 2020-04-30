@@ -1,35 +1,15 @@
 pipeline {
-  agent any
-  stages {
-    stage('build') {
-      steps {
-        sh 'ls -latr'
-      }
-    }
-
-    stage('Test') {
-      parallel {
-        stage('Test') {
-          steps {
-            echo 'This is test stage'
-            sh 'echo "This is additional Test step"'
-          }
+    agent {
+        docker {
+            image 'maven:3-alpine' 
+            args '-v /root/.m2:/root/.m2' 
         }
-
-        stage('Test 2') {
-          steps {
-            echo 'This is test 2'
-          }
+    }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'mvn -B -DskipTests clean package' 
+            }
         }
-
-      }
     }
-
-    stage('Release') {
-      steps {
-        echo 'This is release step'
-      }
-    }
-
-  }
 }
